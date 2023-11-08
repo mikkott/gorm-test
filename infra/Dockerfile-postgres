@@ -1,0 +1,5 @@
+FROM postgres:16
+ARG PG_PASS=supersecretpassword
+ENV POSTGRES_PASSWORD ${PG_PASS}
+EXPOSE 5432
+

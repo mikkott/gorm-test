@@ -1,0 +1,16 @@
+FROM alpine:latest
+ARG PG_PASS=supersecretpassword
+ARG PG_HOST=10.88.0.101
+RUN apk add --no-cache wget
+WORKDIR /app
+RUN cd /app
+RUN pwd
+RUN wget https://github.com/prometheus-community/postgres_exporter/releases/download/v0.9.0/postgres_exporter-0.9.0.linux-amd64.tar.gz
+RUN tar xvfz postgres_exporter-*.linux-amd64.tar.gz
+RUN mv postgres_exporter-*.linux-amd64/postgres_exporter .
+RUN ls -la
+ENV POSTGRES_PASSWORD ${PG_PASS}
+ENV DATA_SOURCE_NAME postgresql://postgres:${PG_PASS}@${PG_HOST}:5432/postgres?sslmode=disable
+EXPOSE 9187
+
+ENTRYPOINT /app/postgres_exporter
